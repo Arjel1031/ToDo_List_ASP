@@ -1,0 +1,29 @@
+﻿body {
+    background: linear-gradient(150deg, rgb(60, 82, 109), rgb(33, 36, 36, 0.35));
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toDoListDiv {
+    display: flex;
+    background: linear-gradient(rgba(167, 230, 227, 0.48), rgba(195, 195, 236, 0.09));
+    width: 300px;
+    height: 300px;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 30px;
+    align-items: center;
+    font-family: 'Courier New', monospace;
+    background: rgb(147, 152, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+}
