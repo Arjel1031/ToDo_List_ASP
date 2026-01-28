@@ -5,19 +5,42 @@
     margin: 0;
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
+    gap: 20px;
 }
+
+h1{
+    margin-bottom: 0;
+    color: #000000;
+    font-size: 40px;
+}
+#taskInput {
+    border-radius: 20px;
+    width: 15%;
+    height: 2.5vh;
+    border: none;
+    outline: none;
+    padding: 5px 15px 5px 15px;
+    font-size: 20px;
+    caret-color: black;
+}
+
+    #taskInput::placeholder {
+        font-size: 20px;
+        text-align: center;
+    }
 
 .toDoListDiv {
     display: flex;
     background: linear-gradient(rgba(167, 230, 227, 0.48), rgba(195, 195, 236, 0.09));
-    width: 300px;
-    height: 300px;
-    flex-direction: column;
+    width: 70%;
+    height: 70%;
+
     gap: 15px;
     padding: 15px;
     border-radius: 30px;
-    align-items: center;
+
     font-family: 'Courier New', monospace;
     background: rgb(147, 152, 255, 0.12);
     backdrop-filter: blur(12px);
@@ -26,4 +49,22 @@
     box-shadow: 0 10px 35px rgba(0,0,0,0.25);
     position: relative;
     overflow: hidden;
+}
+
+.taskDiv {
+
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    height: 94%;
+    width: 40%;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.taskDetailsDiv {
+
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    height: 94%;
+    width: 60%;
+    border-radius: 20px;
+    padding: 20px;
 }
