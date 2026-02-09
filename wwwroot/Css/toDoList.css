@@ -68,3 +68,11 @@ h1{
     border-radius: 20px;
     padding: 20px;
 }
+
+#logoutButton {
+    width: 7%;
+    height: 25px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+}
