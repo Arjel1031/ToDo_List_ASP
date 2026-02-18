@@ -14,6 +14,23 @@ async function api(url, method = "GET", bodyObject = null) {
     }
     return await res.json();
 }
+//document.addEventListener("DOMContentLoaded", initToDo);
+//function initToDo()
+//{
+//    const taskInput = document.getElementById("taskInput") as HTMLInputElement | null
+//    if (!taskInput) return;
+//    taskInput.addEventListener("keydown", async (e) => {
+//        if (e.key !== "Enter") return;
+//        e.preventDefault();
+//        const taskName = taskInput.value.trim();
+//        if (!taskName) return;
+//        await createTask(taskName);
+//    })
+//}
+//async function createTask(taskName: string)
+//{
+//    await api("/api/tasks", "POST", { taskName });
+//}
 document.addEventListener("DOMContentLoaded", initTodoPage);
 function initTodoPage() {
     const taskInput = document.getElementById("taskInput");
