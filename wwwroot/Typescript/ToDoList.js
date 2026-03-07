@@ -69,9 +69,20 @@ function renderTasks(tasks) {
         const li = document.createElement("li");
         li.classList.add("taskList");
         li.textContent = t.taskName;
+        li.addEventListener("click", () => {
+            onTaskClick(t, li);
+        });
         ul.appendChild(li);
     }
 }
 async function createTask(taskName) {
     const task = await api("/api/tasks", "POST", { taskName });
+}
+function onTaskClick(task, element) {
+    document.querySelectorAll(".taskList").forEach(el => el.classList.remove("active"));
+    element.classList.add("active");
+    const details = document.getElementById("sample");
+    if (!details)
+        return;
+    details.textContent = task.taskName;
 }

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ToDo_List_ASP.Model;
-using ToDo_List_ASP.DTO;
 using ToDo_List_ASP.Data;
+using ToDo_List_ASP.DTO;
+using ToDo_List_ASP.Interfaces;
+using ToDo_List_ASP.Model;
 
 namespace ToDo_List_ASP.Controllers
 {
@@ -10,31 +11,39 @@ namespace ToDo_List_ASP.Controllers
     [Route("api/[controller]")]
     public class TasksController : ControllerBase
     {
-        private readonly AppDbContext _db;
+        private readonly ITaskService _taskService;
 
-        public TasksController(AppDbContext db)
+        public TasksController(ITaskService taskService)
         {
-            _db = db;
+            _taskService = taskService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TaskItem>>> Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(await _db.Tasks.OrderBy(t => t.Id).ToListAsync());
+            var tasks = await _taskService.GetAllTasksAsync();
+            return Ok(tasks);
         }
 
         [HttpPost]
-        public async Task<ActionResult<TaskItem>> Post([FromBody] CreateTaskRequest request)
+        public async Task<IActionResult> Post([FromBody] CreateTaskRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.TaskName))
-                return BadRequest("TaskName is required.");
+            try
+            {
+                var task = await _taskService.CreateTaskAsync(request.TaskName);
+                return Ok(task);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-            var task = new TaskItem { TaskName = request.TaskName };
-
-            _db.Tasks.Add(task);
-            await _db.SaveChangesAsync();
-
-            return Ok(task);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _taskService.DeleteTaskAsync(id);
+            return deleted ? NoContent() : NotFound();
         }
     }
 }

@@ -108,4 +108,20 @@ h1{
     border-radius: 30px;
     padding: 10px;
     margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.taskList:hover{
+    transform: scale(1.02);
+    transition: transform 0.15s ease;
+    background: linear-gradient(rgb(210, 240, 240, 0.8), rgb(220, 240, 240));
+}
+.taskList:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.taskList.active {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    background: linear-gradient(rgb(190, 230, 230, 0.9), rgb(200, 235, 235));
 }
