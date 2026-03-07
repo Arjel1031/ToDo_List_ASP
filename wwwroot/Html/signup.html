@@ -3,37 +3,38 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link rel="stylesheet" href="/Css/Signup.css" />
+    <link rel="stylesheet" href="/Css/signup.css" />
 </head>
 <body>
-
     <div class="signUpDiv">
         <h1 id="signUpH1">Sign Up</h1>
 
         <form id="signUpForm">
             <div class="signUpInputDiv">
-                <input type="text" class="signUpInput" id="signUpUsername" placeholder="Email" />
+                <input type="text" class="signUpInput" id="signUpEmail" placeholder="Email" />
             </div>
             <div class="signUpInputDiv">
                 <input type="text" class="signUpInput" id="signUpUsername" placeholder="Username" />
             </div>
             <div class="signUpInputDiv">
- 
                 <input type="password" class="signUpInput" id="signUpPassword" placeholder="Password" />
             </div>
             <div class="signUpInputDiv">
-                <input type="text" class="signUpInput" id="signUpUsername" placeholder="Confirm Password" />
+                <input type="password" class="signUpInput" id="signUpConfirmPassword" placeholder="Confirm Password" />
             </div>
             <div class="signUpInputDiv" id="signUpButtonDiv">
-
-                <button class="signUpButton" id="signUp" type="button">Register</button>
+                <button class="signUpButton" id="signUpSubmit" type="button">Register</button>
             </div>
         </form>
 
+        <p id="errorMessage" style="color: red; display: none; font-size: 14px;"></p>
+        <p id="successMessage" style="color: green; display: none; font-size: 14px;"></p>
 
         <hr id="divider">
         <div>
-            <a href="Login.html" id="buttonLogin">Already have an Account?</a>
+            <a href="/Html/login.html" id="buttonLogin">Already have an account?</a>
         </div>
+    </div>
 </body>
+<script type="module" src="/Typescript/Signup.js"></script>
 </html>

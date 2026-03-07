@@ -1,9 +1,40 @@
-"use strict";
 const signUpBtn = document.getElementById("signUpButton");
 signUpBtn?.addEventListener("click", () => {
     window.location.href = "/Html/signup.html";
 });
 const loginBtn = document.getElementById("loginButton");
-loginBtn?.addEventListener("click", () => {
-    window.location.href = "/Html/toDoList.html";
+loginBtn?.addEventListener("click", async () => {
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
+    if (!username || !password) {
+        showError("Please enter username and password.");
+        return;
+    }
+    try {
+        const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+        if (!response.ok) {
+            showError("Invalid username or password.");
+            return;
+        }
+        const data = await response.json();
+        // Store token — this is what gets sent with every API request
+        sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("username", data.username);
+        window.location.href = "/Html/toDoList.html";
+    }
+    catch {
+        showError("Something went wrong. Try again.");
+    }
 });
+function showError(message) {
+    const errorDiv = document.getElementById("errorMessage");
+    if (!errorDiv)
+        return;
+    errorDiv.textContent = message;
+    errorDiv.style.display = "block";
+}
+export {};

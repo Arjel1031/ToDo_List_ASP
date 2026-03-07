@@ -1,42 +1,40 @@
-"use strict";
+// Guard — if no token, send back to login immediately
+const token = sessionStorage.getItem("token");
+if (!token) {
+    window.location.href = "/Html/login.html";
+}
 const logoutButton = document.getElementById("logoutButton");
 logoutButton?.addEventListener("click", () => {
-    window.location.href = "/Html/Login.html";
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("username");
+    window.location.href = "/Html/login.html";
 });
+// All API calls now attach the token in the Authorization header
 async function api(url, method = "GET", bodyObject = null) {
-    const options = { method };
+    const options = {
+        method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}` // 👈 This is the key change
+        }
+    };
     if (bodyObject !== null) {
-        options.headers = { "Content-Type": "application/json" };
         options.body = JSON.stringify(bodyObject);
     }
     const res = await fetch(url, options);
-    if (!res.ok) {
+    // If token expired or invalid, kick back to login
+    if (res.status === 401) {
+        sessionStorage.removeItem("token");
+        window.location.href = "/Html/login.html";
+        return;
     }
     return await res.json();
 }
-//document.addEventListener("DOMContentLoaded", initToDo);
-//function initToDo()
-//{
-//    const taskInput = document.getElementById("taskInput") as HTMLInputElement | null
-//    if (!taskInput) return;
-//    taskInput.addEventListener("keydown", async (e) => {
-//        if (e.key !== "Enter") return;
-//        e.preventDefault();
-//        const taskName = taskInput.value.trim();
-//        if (!taskName) return;
-//        await createTask(taskName);
-//    })
-//}
-//async function createTask(taskName: string)
-//{
-//    await api("/api/tasks", "POST", { taskName });
-//}
 document.addEventListener("DOMContentLoaded", initTodoPage);
 function initTodoPage() {
     const taskInput = document.getElementById("taskInput");
     if (!taskInput)
         return;
-    // Load tasks when page opens
     loadAndRender().catch(console.error);
     taskInput.addEventListener("keydown", (e) => {
         if (e.key !== "Enter")
@@ -57,7 +55,7 @@ async function loadAndRender() {
     renderTasks(tasks);
 }
 async function getTasks() {
-    const tasks = await api("/api/tasks"); // GET
+    const tasks = await api("/api/tasks");
     return tasks;
 }
 function renderTasks(tasks) {
@@ -76,7 +74,7 @@ function renderTasks(tasks) {
     }
 }
 async function createTask(taskName) {
-    const task = await api("/api/tasks", "POST", { taskName });
+    await api("/api/tasks", "POST", { taskName });
 }
 function onTaskClick(task, element) {
     document.querySelectorAll(".taskList").forEach(el => el.classList.remove("active"));
@@ -86,3 +84,4 @@ function onTaskClick(task, element) {
         return;
     details.textContent = task.taskName;
 }
+export {};

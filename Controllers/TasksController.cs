@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToDo_List_ASP.Data;
 using ToDo_List_ASP.DTO;
@@ -7,6 +8,7 @@ using ToDo_List_ASP.Model;
 
 namespace ToDo_List_ASP.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TasksController : ControllerBase

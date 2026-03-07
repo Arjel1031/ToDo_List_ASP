@@ -1,111 +1,60 @@
+export { };
+// Guard — if no token, send back to login immediately
+const token = sessionStorage.getItem("token");
+if (!token) {
+    window.location.href = "/Html/login.html";
+}
+
 const logoutButton = document.getElementById("logoutButton") as HTMLButtonElement | null;
 
 logoutButton?.addEventListener("click", () => {
-    window.location.href = "/Html/Login.html";
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("username");
+    window.location.href = "/Html/login.html";
 });
 
-async function api(url: string, method: string = "GET", bodyObject: any = null)
-{
-    const options: RequestInit = { method };
-
-
-    if (bodyObject !== null)
+// All API calls now attach the token in the Authorization header
+async function api(url: string, method: string = "GET", bodyObject: any = null) {
+    const options: RequestInit =
     {
-        options.headers = { "Content-Type": "application/json" };
-        options.body = JSON.stringify(bodyObject);
+        method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}` // 👈 This is the key change
+        }
+    };
 
+    if (bodyObject !== null) {
+        options.body = JSON.stringify(bodyObject);
     }
 
     const res = await fetch(url, options);
 
-    if (!res.ok)
-    {
-
+    // If token expired or invalid, kick back to login
+    if (res.status === 401) {
+        sessionStorage.removeItem("token");
+        window.location.href = "/Html/login.html";
+        return;
     }
 
     return await res.json();
 }
-
-
-//async function api(url: string, method: string = "GET", bodyOptions: any | null)
-//{
-//    const options: RequestInit = { method };
-
-//    if (bodyOptions !== null)
-//    {
-//        options.headers = { "Content-Type": "application/json" };
-//        options.body = JSON.stringify(bodyOptions);
-
-//    }
-
-//    const res = await fetch(url, options);
-
-//    return await res.json();
-//}
 
 type Task = {
     id: number;
     taskName: string;
 };
 
-
-
-//document.addEventListener("DOMContentLoaded", initToDo);
-//function initToDo()
-//{
-//    const taskInput = document.getElementById("taskInput") as HTMLInputElement | null
-
-//    if (!taskInput) return;
-
-//    taskInput.addEventListener("keydown", async (e) => {
-//        if (e.key !== "Enter") return;
-
-//        e.preventDefault();
-
-//        const taskName = taskInput.value.trim();
-
-//        if (!taskName) return;
-
-//        await createTask(taskName);
-//    })
-//}
-
-
-//async function createTask(taskName: string)
-//{
-//    await api("/api/tasks", "POST", { taskName });
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", initTodoPage);
+
 function initTodoPage() {
     const taskInput = document.getElementById("taskInput") as HTMLInputElement | null;
-
     if (!taskInput) return;
 
-    // Load tasks when page opens
     loadAndRender().catch(console.error);
 
     taskInput.addEventListener("keydown", (e) => {
         if (e.key !== "Enter") return;
-
         e.preventDefault();
 
         const text = taskInput.value.trim();
@@ -118,13 +67,14 @@ function initTodoPage() {
         })().catch(console.error);
     });
 }
+
 async function loadAndRender() {
     const tasks = await getTasks();
     renderTasks(tasks);
 }
 
 async function getTasks(): Promise<Task[]> {
-    const tasks = await api("/api/tasks"); // GET
+    const tasks = await api("/api/tasks");
     return tasks as Task[];
 }
 
@@ -141,14 +91,14 @@ function renderTasks(tasks: Task[]) {
 
         li.addEventListener("click", () => {
             onTaskClick(t, li);
-        })
+        });
+
         ul.appendChild(li);
     }
 }
 
 async function createTask(taskName: string) {
-    const task = await api("/api/tasks", "POST", { taskName });
-
+    await api("/api/tasks", "POST", { taskName });
 }
 
 function onTaskClick(task: Task, element: HTMLLIElement) {
@@ -159,9 +109,3 @@ function onTaskClick(task: Task, element: HTMLLIElement) {
     if (!details) return;
     details.textContent = task.taskName;
 }
-
-
-
-
-
-
