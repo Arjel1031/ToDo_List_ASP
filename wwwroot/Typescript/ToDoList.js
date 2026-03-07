@@ -67,6 +67,7 @@ function renderTasks(tasks) {
     ul.innerHTML = "";
     for (const t of tasks) {
         const li = document.createElement("li");
+        li.classList.add("taskList");
         li.textContent = t.taskName;
         ul.appendChild(li);
     }

@@ -26,10 +26,10 @@ h1{
     caret-color: black;
 }
 
-    #taskInput::placeholder {
-        font-size: 20px;
-        text-align: center;
-    }
+#taskInput::placeholder {
+    font-size: 20px;
+    text-align: center;
+}
 
 .toDoListDiv {
     display: flex;
@@ -48,16 +48,36 @@ h1{
     border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow: 0 10px 35px rgba(0,0,0,0.25);
     position: relative;
-    overflow: hidden;
+
 }
 
 .taskDiv {
-
     box-shadow: 0 0 10px rgba(0,0,0,0.8);
     height: 94%;
     width: 40%;
     border-radius: 20px;
     padding: 20px;
+    overflow: hidden;
+}
+.taskDiv-inner {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+.taskDiv-inner::-webkit-scrollbar {
+    width: 6px;
+}
+    
+.taskDiv-inner::-webkit-scrollbar-track {
+    background: transparent;
+}
+.taskDiv-inner::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+}
+
+.taskDiv-inner::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.45);
 }
 
 .taskDetailsDiv {
@@ -75,4 +95,17 @@ h1{
     border-radius: 30px;
     border: none;
     cursor: pointer;
+}
+
+#unorderedList {
+    padding-left: 20px;
+    margin: 0px;
+}
+
+.taskList {
+    background: linear-gradient(rgb(230, 247, 247, 0.48), rgb(238, 246, 246));
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    border-radius: 30px;
+    padding: 10px;
+    margin-bottom: 10px;
 }
