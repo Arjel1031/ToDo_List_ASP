@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToDo_List_ASP.Data;
@@ -19,26 +20,26 @@ namespace ToDo_List_ASP.Controllers
         {
             _taskService = taskService;
         }
+        private int GetUserId() =>
+            int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var tasks = await _taskService.GetAllTasksAsync();
+            var tasks = await _taskService.GetAllTasksAsync(GetUserId());
             return Ok(tasks);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateTaskRequest request)
         {
             try
             {
-                var task = await _taskService.CreateTaskAsync(request.TaskName);
+                var task = await _taskService.CreateTaskAsync(request.TaskName, GetUserId());
                 return Ok(task);
             }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            catch (ArgumentException ex) { return BadRequest(ex.Message); }
         }
 
         [HttpDelete("{id}")]

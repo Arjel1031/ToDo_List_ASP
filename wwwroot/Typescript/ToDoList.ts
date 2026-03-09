@@ -12,7 +12,6 @@ logoutButton?.addEventListener("click", () => {
     sessionStorage.removeItem("username");
     window.location.href = "/Html/login.html";
 });
-
 // All API calls now attach the token in the Authorization header
 async function api(url: string, method: string = "GET", bodyObject: any = null) {
     const options: RequestInit =

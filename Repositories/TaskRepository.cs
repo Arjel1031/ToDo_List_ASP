@@ -14,9 +14,12 @@ namespace ToDo_List_ASP.Repositories
             _db = db;
         }
 
-        public async Task<List<TaskItem>> GetAllAsync()
-            => await _db.Tasks.OrderBy(t => t.Id).ToListAsync();
 
+        public async Task<List<TaskItem>> GetAllAsync(int userId)
+            => await _db.Tasks
+                .Where(t => t.UserId == userId) 
+                .OrderBy(t => t.Id)
+                .ToListAsync();
         public async Task<TaskItem> CreateAsync(TaskItem task)
         {
             _db.Tasks.Add(task);

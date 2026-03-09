@@ -12,19 +12,17 @@ namespace ToDo_List_ASP.Services
             _repo = repo;
         }
 
-        public Task<List<TaskItem>> GetAllTasksAsync()
-            => _repo.GetAllAsync();
+        public Task<List<TaskItem>> GetAllTasksAsync(int userId)
+            => _repo.GetAllAsync(userId);
 
-        public async Task<TaskItem> CreateTaskAsync(string taskName)
+        public async Task<TaskItem> CreateTaskAsync(string taskName, int userId)
         {
-            // Business rules live HERE, not in the controller
             if (string.IsNullOrWhiteSpace(taskName))
                 throw new ArgumentException("Task name cannot be empty.");
-
             if (taskName.Length > 200)
                 throw new ArgumentException("Task name too long.");
 
-            var task = new TaskItem { TaskName = taskName.Trim() };
+            var task = new TaskItem { TaskName = taskName.Trim(), UserId = userId };
             return await _repo.CreateAsync(task);
         }
 
